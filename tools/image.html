@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片工具 - FreeTools</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand"><a href="../index.html">🛠️ FreeTools</a></div>
+        <div class="nav-links">
+            <a href="pdf.html">📄 PDF</a>
+            <a href="image.html" class="active">🖼️ 图片</a>
+            <a href="text.html">📝 文本</a>
+            <a href="calc.html">🧮 计算</a>
+        </div>
+        <div class="nav-right">
+            <span class="lang-switch" onclick="toggleLang()">EN/中文</span>
+            <a href="../subscribe.html" class="btn-premium">💎 去广告</a>
+        </div>
+    </nav>
+
+    <div class="tool-page">
+        <h1>🖼️ 图片工具</h1>
+        <p class="subtitle">在浏览器本地处理图片，不上传服务器</p>
+
+        <div class="tool-nav">
+            <a href="#compress" class="active" onclick="switchTab('compress')">压缩</a>
+            <a href="#convert" onclick="switchTab('convert')">格式转换</a>
+            <a href="#watermark" onclick="switchTab('watermark')">水印</a>
+            <a href="#base64" onclick="switchTab('base64')">Base64</a>
+        </div>
+
+        <!-- 压缩 -->
+        <div id="compress" class="tool-workspace">
+            <h3>图片压缩</h3>
+            <p style="color:#5f6368; font-size:14px; margin-bottom:15px;">降低图片质量以减小文件大小</p>
+            <div class="upload-zone" onclick="document.getElementById('imgCompressInput').click()">
+                <div class="icon">🖼️</div>
+                <p>点击选择图片（JPG/PNG）</p>
+                <input type="file" id="imgCompressInput" accept="image/*" onchange="handleImgCompress(this)">
+            </div>
+            <div id="imgCompressControls" class="hidden" style="margin-top:15px;">
+                <label>压缩质量：<input type="range" id="imgQuality" min="10" max="100" value="70" oninput="document.getElementById('imgQualityVal').textContent=this.value+'%'"></label>
+                <span id="imgQualityVal">70%</span>
+                <br><br>
+                <img id="imgPreview" style="max-width:100%; max-height:200px; border-radius:8px; margin:10px 0;">
+                <br>
+                <button class="btn btn-primary" onclick="doImgCompress()">压缩并下载</button>
+            </div>
+        </div>
+
+        <!-- 转换 -->
+        <div id="convert" class="tool-workspace hidden">
+            <h3>格式转换</h3>
+            <p style="color:#5f6368; font-size:14px; margin-bottom:15px;">JPG/PNG/WEBP 互转</p>
+            <div class="upload-zone" onclick="document.getElementById('imgConvertInput').click()">
+                <div class="icon">🖼️</div>
+                <p>点击选择图片</p>
+                <input type="file" id="imgConvertInput" accept="image/*" onchange="handleImgConvert(this)">
+            </div>
+            <div id="imgConvertControls" class="hidden" style="margin-top:15px;">
+                <label>目标格式：</label>
+                <select id="convertFormat">
+                    <option value="image/jpeg">JPEG</option>
+                    <option value="image/png">PNG</option>
+                    <option value="image/webp">WEBP</option>
+                </select>
+                <br><br>
+                <img id="imgConvertPreview" style="max-width:100%; max-height:200px; border-radius:8px; margin:10px 0;">
+                <br>
+                <button class="btn btn-primary" onclick="doImgConvert()">转换并下载</button>
+            </div>
+        </div>
+
+        <!-- 水印 -->
+        <div id="watermark" class="tool-workspace hidden">
+            <h3>添加水印</h3>
+            <p style="color:#5f6368; font-size:14px; margin-bottom:15px;">在图片上添加文字水印</p>
+            <div class="upload-zone" onclick="document.getElementById('imgWatermarkInput').click()">
+                <div class="icon">🖼️</div>
+                <p>点击选择图片</p>
+                <input type="file" id="imgWatermarkInput" accept="image/*" onchange="handleImgWatermark(this)">
+            </div>
+            <div id="imgWatermarkControls" class="hidden" style="margin-top:15px;">
+                <label>水印文字：<input type="text" id="watermarkText" value="FreeTools" style="width:auto;"></label>
+                <label>字体大小：<input type="number" id="watermarkSize" value="40" style="width:80px;"></label>
+                <label>透明度：<input type="range" id="watermarkOpacity" min="10" max="100" value="50"></label>
+                <br><br>
+                <canvas id="watermarkCanvas" style="max-width:100%; border-radius:8px; margin:10px 0;"></canvas>
+                <br>
+                <button class="btn btn-primary" onclick="doImgWatermark()">下载带水印图片</button>
+            </div>
+        </div>
+
+        <!-- Base64 -->
+        <div id="base64" class="tool-workspace hidden">
+            <h3>图片转 Base64</h3>
+            <p style="color:#5f6368; font-size:14px; margin-bottom:15px;">将图片编码为 Base64 字符串</p>
+            <div class="upload-zone" onclick="document.getElementById('imgBase64Input').click()">
+                <div class="icon">🖼️</div>
+                <p>点击选择图片</p>
+                <input type="file" id="imgBase64Input" accept="image/*" onchange="handleImgBase64(this)">
+            </div>
+            <div id="imgBase64Result" class="hidden" style="margin-top:15px;">
+                <textarea id="base64Output" readonly style="min-height:120px; font-size:12px;"></textarea>
+                <button class="btn btn-secondary" onclick="copyText(document.getElementById('base64Output').value)">复制</button>
+            </div>
+        </div>
+
+        <div class="ad-footer" style="margin-top:30px;">
+            <div class="ad-placeholder">📢 广告位</div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="../index.html">首页</a><a href="pdf.html">PDF</a><a href="image.html">图片</a><a href="text.html">文本</a><a href="calc.html">计算</a>
+        </div>
+        <p>© 2024 FreeTools. 本地浏览器运行。</p>
+    </footer>
+
+    <script src="../js/app.js"></script>
+    <script>
+    let compressImgSrc = null;
+    let convertImgSrc = null;
+    let watermarkImgSrc = null;
+    let watermarkImgObj = null;
+
+    function switchTab(id) {
+        document.querySelectorAll('.tool-workspace').forEach(el => el.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+        document.querySelectorAll('.tool-nav a').forEach(a => a.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+
+    // Compress
+    async function handleImgCompress(input) {
+        if (!consumeUse()) return;
+        const file = input.files[0]; if (!file) return;
+        compressImgSrc = await readFileAsDataURL(file);
+        document.getElementById('imgPreview').src = compressImgSrc;
+        document.getElementById('imgCompressControls').classList.remove('hidden');
+    }
+    function doImgCompress() {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width; canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            const q = document.getElementById('imgQuality').value / 100;
+            canvas.toBlob(blob => downloadFile(blob, 'compressed.jpg'), 'image/jpeg', q);
+        };
+        img.src = compressImgSrc;
+    }
+
+    // Convert
+    async function handleImgConvert(input) {
+        if (!consumeUse()) return;
+        const file = input.files[0]; if (!file) return;
+        convertImgSrc = await readFileAsDataURL(file);
+        document.getElementById('imgConvertPreview').src = convertImgSrc;
+        document.getElementById('imgConvertControls').classList.remove('hidden');
+    }
+    function doImgConvert() {
+        const format = document.getElementById('convertFormat').value;
+        const ext = format.split('/')[1];
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width; canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            if (ext === 'png') ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.drawImage(img, 0, 0);
+            canvas.toBlob(blob => downloadFile(blob, 'converted.'+ext), format);
+        };
+        img.src = convertImgSrc;
+    }
+
+    // Watermark
+    async function handleImgWatermark(input) {
+        if (!consumeUse()) return;
+        const file = input.files[0]; if (!file) return;
+        watermarkImgSrc = await readFileAsDataURL(file);
+        watermarkImgObj = new Image();
+        watermarkImgObj.onload = () => drawWatermark();
+        watermarkImgObj.src = watermarkImgSrc;
+        document.getElementById('imgWatermarkControls').classList.remove('hidden');
+        ['watermarkText','watermarkSize','watermarkOpacity'].forEach(id => {
+            document.getElementById(id).addEventListener('input', drawWatermark);
+        });
+    }
+    function drawWatermark() {
+        if (!watermarkImgObj) return;
+        const canvas = document.getElementById('watermarkCanvas');
+        canvas.width = watermarkImgObj.width; canvas.height = watermarkImgObj.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(watermarkImgObj, 0, 0);
+        ctx.font = document.getElementById('watermarkSize').value + 'px sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,' + document.getElementById('watermarkOpacity').value/100 + ')';
+        ctx.textAlign = 'right';
+        ctx.fillText(document.getElementById('watermarkText').value, canvas.width-20, canvas.height-20);
+    }
+    function doImgWatermark() {
+        const canvas = document.getElementById('watermarkCanvas');
+        canvas.toBlob(blob => downloadFile(blob, 'watermarked.png'));
+    }
+
+    // Base64
+    async function handleImgBase64(input) {
+        if (!consumeUse()) return;
+        const file = input.files[0]; if (!file) return;
+        const data = await readFileAsDataURL(file);
+        document.getElementById('base64Output').value = data;
+        document.getElementById('imgBase64Result').classList.remove('hidden');
+    }
+    </script>
+</body>
+</html>

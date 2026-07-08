@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreeTools - 免费在线工具箱</title>
+    <meta name="description" content="FreeTools - 免费在线PDF工具、图片工具、文本工具、计算工具，无需上传，浏览器本地处理，安全快速">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛠️</text></svg>">
+</head>
+<body>
+    <!-- 顶部广告条 -->
+    <div class="ad-banner-top" id="adTop">
+        <div class="ad-placeholder">📢 广告位（百度联盟/360联盟）</div>
+        <button class="ad-close" onclick="closeAd('adTop')">✕</button>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="index.html">🛠️ FreeTools</a>
+        </div>
+        <div class="nav-links">
+            <a href="tools/pdf.html">📄 PDF</a>
+            <a href="tools/image.html">🖼️ 图片</a>
+            <a href="tools/text.html">📝 文本</a>
+            <a href="tools/calc.html">🧮 计算</a>
+        </div>
+        <div class="nav-right">
+            <span class="lang-switch" onclick="toggleLang()">EN/中文</span>
+            <a href="subscribe.html" class="btn-premium">💎 去广告</a>
+        </div>
+    </nav>
+
+    <!-- 英雄区 -->
+    <header class="hero">
+        <h1 data-i18n="heroTitle">免费在线工具箱</h1>
+        <p data-i18n="heroDesc">所有工具在浏览器本地运行，文件不上传服务器，安全、快速、免费</p>
+        <div class="search-box">
+            <input type="text" id="toolSearch" placeholder="搜索工具..." data-i18n-placeholder="searchPlaceholder" onkeyup="searchTools()">
+        </div>
+    </header>
+
+    <!-- 使用次数提示 -->
+    <div class="usage-bar" id="usageBar">
+        <span data-i18n="freeUsage">今日免费使用次数：</span>
+        <span id="usageCount">10</span>/10
+        <button class="btn-watch-ad" onclick="watchAd()" data-i18n="watchAd">看广告 +5次</button>
+        <a href="subscribe.html" class="link-subscribe" data-i18n="upgrade">升级会员无限用</a>
+    </div>
+
+    <!-- 工具分类 -->
+    <main class="tools-grid" id="toolsGrid">
+        
+        <div class="tool-category" data-category="pdf">
+            <h2>📄 <span data-i18n="pdfTools">PDF工具</span></h2>
+            <div class="tool-cards">
+                <a href="tools/pdf.html?tool=merge" class="tool-card">
+                    <div class="tool-icon">📑</div>
+                    <div class="tool-name" data-i18n="pdfMerge">PDF合并</div>
+                    <div class="tool-desc" data-i18n="pdfMergeDesc">合并多个PDF为一个文件</div>
+                </a>
+                <a href="tools/pdf.html?tool=split" class="tool-card">
+                    <div class="tool-icon">✂️</div>
+                    <div class="tool-name" data-i18n="pdfSplit">PDF拆分</div>
+                    <div class="tool-desc" data-i18n="pdfSplitDesc">按页码拆分PDF文件</div>
+                </a>
+                <a href="tools/pdf.html?tool=compress" class="tool-card">
+                    <div class="tool-icon">🗜️</div>
+                    <div class="tool-name" data-i18n="pdfCompress">PDF压缩</div>
+                    <div class="tool-desc" data-i18n="pdfCompressDesc">减小PDF文件大小</div>
+                </a>
+                <a href="tools/pdf.html?tool=rotate" class="tool-card">
+                    <div class="tool-icon">🔄</div>
+                    <div class="tool-name" data-i18n="pdfRotate">PDF旋转</div>
+                    <div class="tool-desc" data-i18n="pdfRotateDesc">旋转PDF页面方向</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="tool-category" data-category="image">
+            <h2>🖼️ <span data-i18n="imageTools">图片工具</span></h2>
+            <div class="tool-cards">
+                <a href="tools/image.html?tool=compress" class="tool-card">
+                    <div class="tool-icon">🗜️</div>
+                    <div class="tool-name" data-i18n="imgCompress">图片压缩</div>
+                    <div class="tool-desc" data-i18n="imgCompressDesc">压缩图片文件大小</div>
+                </a>
+                <a href="tools/image.html?tool=convert" class="tool-card">
+                    <div class="tool-icon">🔄</div>
+                    <div class="tool-name" data-i18n="imgConvert">格式转换</div>
+                    <div class="tool-desc" data-i18n="imgConvertDesc">JPG/PNG/WEBP互转</div>
+                </a>
+                <a href="tools/image.html?tool=watermark" class="tool-card">
+                    <div class="tool-icon">💧</div>
+                    <div class="tool-name" data-i18n="imgWatermark">加水印</div>
+                    <div class="tool-desc" data-i18n="imgWatermarkDesc">给图片添加文字水印</div>
+                </a>
+                <a href="tools/image.html?tool=base64" class="tool-card">
+                    <div class="tool-icon">🔢</div>
+                    <div class="tool-name" data-i18n="imgBase64">Base64</div>
+                    <div class="tool-desc" data-i18n="imgBase64Desc">图片转Base64编码</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="tool-category" data-category="text">
+            <h2>📝 <span data-i18n="textTools">文本工具</span></h2>
+            <div class="tool-cards">
+                <a href="tools/text.html?tool=json" class="tool-card">
+                    <div class="tool-icon">📋</div>
+                    <div class="tool-name" data-i18n="textJson">JSON格式化</div>
+                    <div class="tool-desc" data-i18n="textJsonDesc">JSON美化/压缩/校验</div>
+                </a>
+                <a href="tools/text.html?tool=base64" class="tool-card">
+                    <div class="tool-icon">🔡</div>
+                    <div class="tool-name" data-i18n="textBase64">Base64</div>
+                    <div class="tool-desc" data-i18n="textBase64Desc">Base64编码/解码</div>
+                </a>
+                <a href="tools/text.html?tool=url" class="tool-card">
+                    <div class="tool-icon">🔗</div>
+                    <div class="tool-name" data-i18n="textUrl">URL编解码</div>
+                    <div class="tool-desc" data-i18n="textUrlDesc">URL编码/解码</div>
+                </a>
+                <a href="tools/text.html?tool=markdown" class="tool-card">
+                    <div class="tool-icon">📝</div>
+                    <div class="tool-name" data-i18n="textMarkdown">Markdown</div>
+                    <div class="tool-desc" data-i18n="textMarkdownDesc">Markdown实时预览</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="tool-category" data-category="calc">
+            <h2>🧮 <span data-i18n="calcTools">计算工具</span></h2>
+            <div class="tool-cards">
+                <a href="tools/calc.html?tool=calc" class="tool-card">
+                    <div class="tool-icon">🔢</div>
+                    <div class="tool-name" data-i18n="calc">科学计算器</div>
+                    <div class="tool-desc" data-i18n="calcDesc">在线科学计算器</div>
+                </a>
+                <a href="tools/calc.html?tool=unit" class="tool-card">
+                    <div class="tool-icon">📏</div>
+                    <div class="tool-name" data-i18n="calcUnit">单位换算</div>
+                    <div class="tool-desc" data-i18n="calcUnitDesc">长度/重量/温度换算</div>
+                </a>
+                <a href="tools/calc.html?tool=password" class="tool-card">
+                    <div class="tool-icon">🔐</div>
+                    <div class="tool-name" data-i18n="calcPassword">密码生成</div>
+                    <div class="tool-desc" data-i18n="calcPasswordDesc">生成安全随机密码</div>
+                </a>
+                <a href="tools/calc.html?tool=loan" class="tool-card">
+                    <div class="tool-icon">💰</div>
+                    <div class="tool-name" data-i18n="calcLoan">贷款计算</div>
+                    <div class="tool-desc" data-i18n="calcLoanDesc">房贷/车贷月供计算</div>
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 底部广告 -->
+    <div class="ad-footer" id="adFooter">
+        <div class="ad-placeholder">📢 底部广告位</div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="index.html">首页</a>
+            <a href="tools/pdf.html">PDF工具</a>
+            <a href="tools/image.html">图片工具</a>
+            <a href="tools/text.html">文本工具</a>
+            <a href="tools/calc.html">计算工具</a>
+            <a href="subscribe.html">会员订阅</a>
+        </div>
+        <p>© 2024 FreeTools. <span data-i18n="footerText">所有工具在本地浏览器运行，文件不上传服务器。</span></p>
+    </footer>
+
+    <!-- 看广告弹窗 -->
+    <div class="modal-overlay" id="adModal" style="display:none">
+        <div class="modal">
+            <h3 data-i18n="adModalTitle">观看广告获取使用次数</h3>
+            <div class="ad-video-placeholder">
+                <p data-i18n="adPlaying">广告播放中...</p>
+                <div class="ad-timer">30</div>
+            </div>
+            <p data-i18n="adReward">观看完成后 +5 次使用次数</p>
+            <button class="btn-secondary" onclick="closeAdModal()" data-i18n="skip">跳过（不获得奖励）</button>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
